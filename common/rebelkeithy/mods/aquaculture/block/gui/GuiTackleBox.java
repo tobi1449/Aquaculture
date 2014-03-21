@@ -69,31 +69,25 @@ public class GuiTackleBox extends GuiContainer {
 		if(tackleBox.getStackInSlot(0) != null) {
 			ItemStack itemstack = tackleBox.getStackInSlot(0);
 			if(par1GuiButton.id > 11) {
-				NBTTagCompound tag = itemstack.getTagCompound();
-				if(tag == null) {
-					System.out.println("test");
-					tag = new NBTTagCompound();
-					itemstack.setTagCompound(tag);
-				}
 				colorType = par1GuiButton.id - 12;
-				tag.setInteger("color", colorType);
-				itemstack.setTagCompound(tag);
+				setTag(itemstack, "color", colorType);
 			} else {
-				NBTTagCompound tag = itemstack.getTagCompound();
-				if(tag == null) {
-					System.out.println("tests");
-					tag = new NBTTagCompound();
-					itemstack.setTagCompound(tag);
-				}
 				lureType = par1GuiButton.id;
-				tag.setInteger("lureType", lureType);
-				itemstack.setTagCompound(tag);
-				itemstack.setItemName(lureType + " Lure ID");
-				tackleBox.setInventorySlotContents(0, itemstack);
-
+				setTag(itemstack, "lureType", lureType);
 			}
 
 		}
+	}
+
+	public void setTag(ItemStack itemstack, String tags, int id) {
+		NBTTagCompound tag = itemstack.getTagCompound();
+		if(tag == null) {
+			tag = new NBTTagCompound();
+		}
+		tag.setInteger(tags, lureType);
+		itemstack.setTagCompound(tag);
+		itemstack.setItemName(lureType + " Lure ID");
+		tackleBox.setInventorySlotContents(0, itemstack);
 	}
 
 	@Override
