@@ -36,8 +36,9 @@ public class BlockTackleBox extends BlockContainer {
 		if(tileEntity == null || player.isSneaking()) {
 			return false;
 		}
+
 		player.openGui(Aquaculture.instance, 0, world, x, y, z);
-		
+
 		return true;
 	}
 

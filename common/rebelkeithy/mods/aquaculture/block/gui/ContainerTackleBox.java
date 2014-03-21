@@ -16,7 +16,6 @@ public class ContainerTackleBox extends Container {
 		this.tackleBox = tackleBox;
 		addSlotToContainer(new Slot(tackleBox, 0, 115, 20));
 		//addSlotToContainer(new Slot(tackleBox, 1, 115, 45));
-
 		this.bindPlayerInventory(playerInv);
 	}
 
@@ -37,7 +36,8 @@ public class ContainerTackleBox extends Container {
 		}
 	}
 	
-	public void updateName(String string) {
-	   ((Slot)this.inventorySlots.get(0)).getStack().setItemName(string);	
+	@Override
+	public ItemStack transferStackInSlot(EntityPlayer paramEntityPlayer, int paramInt) {
+		return null;
 	}
 }

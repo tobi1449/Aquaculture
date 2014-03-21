@@ -1,7 +1,6 @@
 package rebelkeithy.mods.aquaculture;
 
 import rebelkeithy.mods.aquaculture.block.AquacultureBlock;
-import rebelkeithy.mods.aquaculture.block.gui.AquacultureGuiHandler;
 import rebelkeithy.mods.aquaculture.enchantments.AquacultureEnchants;
 import rebelkeithy.mods.aquaculture.items.AquacultureItems;
 import cpw.mods.fml.common.Mod;

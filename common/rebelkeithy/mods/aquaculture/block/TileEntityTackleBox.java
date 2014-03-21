@@ -10,7 +10,7 @@ import net.minecraft.tileentity.TileEntity;
 
 public class TileEntityTackleBox extends TileEntity implements IInventory {
 
-	ItemStack[] slots = new ItemStack[2];
+	private ItemStack[] slots = new ItemStack[2];
 
 	@Override
 	public void closeChest() {
@@ -63,7 +63,7 @@ public class TileEntityTackleBox extends TileEntity implements IInventory {
 
 	@Override
 	public boolean isInvNameLocalized() {
-		return true;
+		return false;
 	}
 
 	@Override

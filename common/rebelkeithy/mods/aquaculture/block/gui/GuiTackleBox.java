@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.item.ItemFishingRod;
@@ -15,18 +16,19 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
+import rebelkeithy.mods.aquaculture.block.TileEntityTackleBox;
 import cpw.mods.fml.client.FMLClientHandler;
 
 public class GuiTackleBox extends GuiContainer {
 	private final ResourceLocation TEXTURE = new ResourceLocation("aquaculture", "textures/gui/guiTackleBox.png");
 
-	private ContainerTackleBox container;
+	private TileEntityTackleBox tackleBox;
 	private int lureType = 0;
 	private int colorType = 0;
 
-	public GuiTackleBox(ContainerTackleBox container) {
-		super(container);
-		this.container = container;
+	public GuiTackleBox(InventoryPlayer playerInv, TileEntityTackleBox tackleBox) {
+		super(new ContainerTackleBox(playerInv, tackleBox));
+		this.tackleBox = tackleBox;
 	}
 
 	@Override
@@ -64,30 +66,35 @@ public class GuiTackleBox extends GuiContainer {
 
 	@Override
 	protected void actionPerformed(GuiButton par1GuiButton) {
-		if(container.getSlot(0).getHasStack()) {
-			ItemStack itemstack = container.getSlot(0).getStack();
+		if(tackleBox.getStackInSlot(0) != null) {
+			ItemStack itemstack = tackleBox.getStackInSlot(0);
 			if(par1GuiButton.id > 11) {
 				NBTTagCompound tag = itemstack.getTagCompound();
 				if(tag == null) {
+					System.out.println("test");
 					tag = new NBTTagCompound();
 					itemstack.setTagCompound(tag);
 				}
 				colorType = par1GuiButton.id - 12;
 				tag.setInteger("color", colorType);
+				itemstack.setTagCompound(tag);
 			} else {
 				NBTTagCompound tag = itemstack.getTagCompound();
 				if(tag == null) {
+					System.out.println("tests");
 					tag = new NBTTagCompound();
 					itemstack.setTagCompound(tag);
 				}
 				lureType = par1GuiButton.id;
 				tag.setInteger("lureType", lureType);
-				container.updateName(lureType + " Lure ID");
+				itemstack.setTagCompound(tag);
+				itemstack.setItemName(lureType + " Lure ID");
+				tackleBox.setInventorySlotContents(0, itemstack);
+
 			}
-			container.tackleBox.setInventorySlotContents(0, itemstack);
+
 		}
 	}
-	
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
