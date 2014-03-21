@@ -8,10 +8,9 @@ import net.minecraftforge.common.Property;
 
 public enum Config {
 	INSTANCE;
-	
+
 	public static int fishID = 22000;
-	
-	public static int woodenRodID = 22001;
+
 	public static int ironRodID = 22002;
 	public static int goldRodID = 22003;
 	public static int diamondRodID = 22004;
@@ -41,10 +40,10 @@ public enum Config {
 	public static int neptuniumPlateID = 22026;
 	public static int neptuniumLegsID = 22027;
 	public static int neptuniumBootsID = 22028;
-	
 
 	public static int lootID = 22029;
 
+	public static int tackleBoxID = 3000;
 	/*
 	 * Enchantments
 	 */
@@ -65,7 +64,6 @@ public enum Config {
 		Configuration config = new Configuration(file);
 		config.load();
 
-		woodenRodID = config.getItem("Wooden Fishing Rod ID", woodenRodID).getInt();
 		ironRodID = config.getItem("Iron Fishing Rod ID", ironRodID).getInt();
 		goldRodID = config.getItem("Gold Fishing Rod ID", goldRodID).getInt();
 		diamondRodID = config.getItem("Diamond Fishing Rod ID", diamondRodID).getInt();
@@ -101,6 +99,8 @@ public enum Config {
 		neptuniumLegsID = config.getItem("Neptunium Legs", neptuniumLegsID).getInt();
 		neptuniumBootsID = config.getItem("Neptunium Boots", neptuniumBootsID).getInt();
 
+		tackleBoxID = config.getBlock("Tackle Box", tackleBoxID).getInt();
+		
 		appealingID = isIdAvailableOrSet(config.get(categoryEnchantments, "Appealing", appealingID)).getInt();
 		magneticID = isIdAvailableOrSet(config.get(categoryEnchantments, "Magnetic", magneticID)).getInt();
 		longcastID = isIdAvailableOrSet(config.get(categoryEnchantments, "Long Cast", longcastID)).getInt();

@@ -24,7 +24,6 @@ import net.minecraft.world.biome.BiomeGenBase;
 import rebelkeithy.mods.aquaculture.enchantments.AquacultureEnchants;
 import rebelkeithy.mods.aquaculture.items.AquacultureItems;
 import rebelkeithy.mods.aquaculture.items.ItemAquacultureFishingRod;
-import rebelkeithy.mods.aquaculture.items.ItemAquacultureWoodenFishingRod;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -68,6 +67,9 @@ public class EntityCustomFishHook extends EntityFishHook {
 
 	private boolean isAdmin = false;
 
+	private int lureType;
+	private int color;
+
 	public EntityCustomFishHook(World par1World) {
 		super(par1World);
 		this.xTile = -1;
@@ -83,29 +85,9 @@ public class EntityCustomFishHook extends EntityFishHook {
 		this.ignoreFrustumCheck = true;
 	}
 
-	@SideOnly(Side.CLIENT)
-	public EntityCustomFishHook(World par1World, double par2, double par4, double par6, EntityPlayer par8EntityPlayer) {
-		super(par1World, par2, par4, par6, par8EntityPlayer);
-		this.setPosition(par2, par4, par6);
-		this.ignoreFrustumCheck = true;
-		this.angler = par8EntityPlayer;
-		par8EntityPlayer.fishEntity = this;
-
-		this.xTile = -1;
-		this.yTile = -1;
-		this.zTile = -1;
-		this.inTile = 0;
-		this.inGround = false;
-		this.shake = 0;
-		this.ticksInAir = 0;
-		this.ticksCatchable = 0;
-		this.bobber = null;
-		this.setSize(0.25F, 0.25F);
-		this.ignoreFrustumCheck = true;
-	}
-
-	public EntityCustomFishHook(World par1World, EntityPlayer par2EntityPlayer) {
+	public EntityCustomFishHook(World par1World, EntityPlayer par2EntityPlayer, int lureType, int color) {
 		super(par1World, par2EntityPlayer);
+		System.out.println(this.color);
 		this.xTile = -1;
 		this.yTile = -1;
 		this.zTile = -1;
@@ -130,6 +112,9 @@ public class EntityCustomFishHook extends EntityFishHook {
 		this.motionZ = (double) (MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI) * f);
 		this.motionY = (double) (-MathHelper.sin(this.rotationPitch / 180.0F * (float) Math.PI) * f);
 
+		this.lureType = lureType;
+		this.color = color;
+
 		int shortCast = EnchantmentHelper.getEnchantmentLevel(AquacultureEnchants.shortcast.effectId, par2EntityPlayer.getCurrentEquippedItem());
 		int longCast = EnchantmentHelper.getEnchantmentLevel(AquacultureEnchants.longcast.effectId, par2EntityPlayer.getCurrentEquippedItem());
 
@@ -148,13 +133,10 @@ public class EntityCustomFishHook extends EntityFishHook {
 		this.baseCatchTime = amount;
 	}
 
-	public EntityCustomFishHook(World world, EntityPlayer entityplayer, boolean b) {
-		this(world, entityplayer);
+	public EntityCustomFishHook(World world, EntityPlayer entityplayer, boolean b, int lureType, int color) {
+		this(world, entityplayer, lureType, color);
 
 		isAdmin = b;
-	}
-
-	protected void entityInit() {
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -218,7 +200,7 @@ public class EntityCustomFishHook extends EntityFishHook {
 	public boolean isFishingRod(ItemStack stack) {
 		int id = stack.itemID;
 
-		return (Item.itemsList[id] instanceof ItemAquacultureFishingRod) || (Item.itemsList[id] instanceof ItemAquacultureWoodenFishingRod) || id == AquacultureItems.adminFishingRod.itemID;
+		return (Item.itemsList[id] instanceof ItemAquacultureFishingRod) || id == AquacultureItems.adminFishingRod.itemID;
 	}
 
 	/**
@@ -227,7 +209,6 @@ public class EntityCustomFishHook extends EntityFishHook {
 	@Override
 	public void onUpdate() {
 		// super.onUpdate();
-
 		if(!worldObj.isRemote && this.angler == null)
 			this.setDead();
 
@@ -464,6 +445,9 @@ public class EntityCustomFishHook extends EntityFishHook {
 		par1NBTTagCompound.setByte("inTile", (byte) this.inTile);
 		par1NBTTagCompound.setByte("shake", (byte) this.shake);
 		par1NBTTagCompound.setByte("inGround", (byte) (this.inGround ? 1 : 0));
+		par1NBTTagCompound.setInteger("lureType", this.lureType);
+		par1NBTTagCompound.setInteger("color", this.color);
+		
 	}
 
 	/**
@@ -476,6 +460,8 @@ public class EntityCustomFishHook extends EntityFishHook {
 		this.inTile = par1NBTTagCompound.getByte("inTile") & 255;
 		this.shake = par1NBTTagCompound.getByte("shake") & 255;
 		this.inGround = par1NBTTagCompound.getByte("inGround") == 1;
+		this.color = par1NBTTagCompound.getInteger("color");
+		this.lureType = par1NBTTagCompound.getInteger("lureType");
 	}
 
 	@SideOnly(Side.CLIENT)

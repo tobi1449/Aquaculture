@@ -1,5 +1,7 @@
 package rebelkeithy.mods.aquaculture;
 
+import rebelkeithy.mods.aquaculture.block.AquacultureBlock;
+import rebelkeithy.mods.aquaculture.block.gui.AquacultureGuiHandler;
 import rebelkeithy.mods.aquaculture.enchantments.AquacultureEnchants;
 import rebelkeithy.mods.aquaculture.items.AquacultureItems;
 import cpw.mods.fml.common.Mod;
@@ -9,11 +11,11 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 @Mod(modid = Aquaculture.MOD_ID, name = Aquaculture.MOD_NAME, version = Aquaculture.MOD_VERSION)
-@NetworkMod(clientSideRequired = true, serverSideRequired = true)
+@NetworkMod(clientSideRequired = true, serverSideRequired = false)
 public class Aquaculture {
 	public final static String MOD_ID = "Aquaculture";
 	public final static String MOD_NAME = "Aquaculture";
@@ -32,6 +34,9 @@ public class Aquaculture {
 		tab = new AquacultureTab("Aquaculture");
 
 		AquacultureItems.INSTANCE.register();
+		AquacultureBlock.INSTANCE.register();
+		NetworkRegistry.instance().registerGuiHandler(this, new AquacultureGuiHandler());
+		proxy.registerModelRenderers();
 	}
 
 	@EventHandler

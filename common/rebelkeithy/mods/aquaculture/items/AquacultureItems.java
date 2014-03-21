@@ -3,7 +3,6 @@ package rebelkeithy.mods.aquaculture.items;
 import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.EnumHelper;
 import net.minecraftforge.oredict.OreDictionary;
@@ -11,16 +10,13 @@ import rebelkeithy.mods.aquaculture.Aquaculture;
 import rebelkeithy.mods.aquaculture.BiomeType;
 import rebelkeithy.mods.aquaculture.Config;
 import rebelkeithy.mods.aquaculture.FishLoot;
-import rebelkeithy.mods.aquaculture.LocalizationHelper;
 import rebelkeithy.mods.aquaculture.items.meta.SubItem;
 import rebelkeithy.mods.aquaculture.items.meta.SubItemFood;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public enum AquacultureItems {
 	INSTANCE;
 
-	public static final Item woodenFishingRod = new ItemAquacultureWoodenFishingRod(Config.woodenRodID, 50, 10, "Wood").setUnlocalizedName("fishingRod");
 	public static final Item ironFishingRod = new ItemAquacultureFishingRod(Config.ironRodID, 75, 14, "Iron").setTextureName("aquaculture:IronFishingRod").setUnlocalizedName("IronFishingRod").setCreativeTab(Aquaculture.tab);
 	public static final Item goldFishingRod = new ItemAquacultureFishingRod(Config.goldRodID, 50, 22, "Gold").setTextureName("aquaculture:GoldFishingRod").setUnlocalizedName("GoldFishingRod").setCreativeTab(Aquaculture.tab);
 	public static final Item diamondFishingRod = new ItemAquacultureFishingRod(Config.diamondRodID, 250, 10, "Diamond").setTextureName("aquaculture:DiamondFishingRod").setUnlocalizedName("DiamondFishingRod").setCreativeTab(Aquaculture.tab);
@@ -67,7 +63,6 @@ public enum AquacultureItems {
 	public static final ItemFish fish = (ItemFish) new ItemFish(Config.fishID).setUnlocalizedName("Fish").setCreativeTab(Aquaculture.tab);
 
 	public void register() {
-		register(woodenFishingRod);
 		register(ironFishingRod);
 		register(goldFishingRod);
 		register(diamondFishingRod);
@@ -199,6 +194,5 @@ public enum AquacultureItems {
 		if(!tag.contains("item.")) {
 			tag = "item." + tag;
 		}
-		LanguageRegistry.addName(item, LocalizationHelper.localize(tag + ".name"));
 	}
 }

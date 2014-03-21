@@ -19,4 +19,5 @@ public class AquaItemAxe extends ItemAxe {
 		this.setTextureName("aquaculture:" + par1Str.replaceAll("\\s", ""));
 		return this;
 	}
+
 }

@@ -1,8 +1,6 @@
 package rebelkeithy.mods.aquaculture.enchantments;
 
-import rebelkeithy.mods.aquaculture.LocalizationHelper;
 import net.minecraft.enchantment.Enchantment;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
  * @author Freyja
@@ -32,10 +30,5 @@ public class EnchantmentMagnetic extends EnchantmentFishingPole {
 	@Override
 	public int getMaxEnchantability(int par1) {
 		return this.getMinEnchantability(par1) + 25;
-	}
-
-	@Override
-	public String getTranslatedName(int par1) {
-		return LocalizationHelper.localize("enchantment.magnetic") + RomanNumeral.convertToRoman(par1);
 	}
 }

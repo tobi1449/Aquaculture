@@ -1,7 +1,5 @@
 package rebelkeithy.mods.aquaculture.enchantments;
 
-import rebelkeithy.mods.aquaculture.LocalizationHelper;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class EnchantmentHeavyLine extends EnchantmentFishingPole {
 
@@ -23,10 +21,5 @@ public class EnchantmentHeavyLine extends EnchantmentFishingPole {
 	@Override
 	public int getMaxEnchantability(int par1) {
 		return super.getMinEnchantability(par1) + 50;
-	}
-
-	@Override
-	public String getTranslatedName(int par1) {
-		return LocalizationHelper.localize("enchantment.heavyLine") + RomanNumeral.convertToRoman(par1);
 	}
 }

@@ -1,5 +1,8 @@
 itemGroup.Aquaculture=Aquaculture
 
+# Block
+block.tile.tackleBox.name=Tackle Box
+tacklebox.name=Tackle Box
 # Enchantments
 enchantment.appealing=Appealing
 enchantment.barbedHook=Barbed Hook

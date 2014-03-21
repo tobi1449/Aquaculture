@@ -16,11 +16,6 @@ public class AquacultureTab extends CreativeTabs {
 		itemID = id;
 	}
 
-	@Override
-	public String getTranslatedTabLabel() {
-		return LocalizationHelper.localize("itemGroup.Aquaculture");
-	}
-
 	@SideOnly(Side.CLIENT)
 	/**
 	 * the itemID for the item to be displayed on the tab
