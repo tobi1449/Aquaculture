@@ -121,4 +121,22 @@ public class MetaItemFood extends ItemFood implements IEdible {
         return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStack);
     }
 
+    @Override
+    public int getHealAmount(ItemStack stack) {
+        int damage = stack.getItemDamage();
+        if (damage >= 0 && damage < subItems.size()) {
+            return subItems.get(damage).getHealAmount();
+        }
+        return super.getHealAmount(stack);
+    }
+
+    @Override
+    public float getSaturationModifier(ItemStack stack) {
+        int damage = stack.getItemDamage();
+        if (damage >= 0 && damage < subItems.size()) {
+            return subItems.get(damage).getSaturationModifier();
+        }
+        return super.getSaturationModifier(stack);
+    }
+
 }
