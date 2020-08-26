@@ -1,5 +1,6 @@
 package com.teammetallurgy.aquaculture.item;
 
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.teammetallurgy.aquaculture.Aquaculture;
 import com.teammetallurgy.aquaculture.api.AquacultureAPI;
@@ -7,6 +8,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -16,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -71,7 +74,7 @@ public class ItemFilletKnife extends SwordItem {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void addInformation(@Nonnull ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag tooltipFlag) {
+    public void addInformation(@Nonnull ItemStack stack, @Nullable World world, @Nonnull List<ITextComponent> tooltip, @Nonnull ITooltipFlag tooltipFlag) {
         if (this.getTier() == AquacultureAPI.MATS.NEPTUNIUM) {
             tooltip.add(new TranslationTextComponent("aquaculture.unbreakable").setStyle(new Style().setColor(TextFormatting.DARK_GRAY).setBold(true)));
         }
