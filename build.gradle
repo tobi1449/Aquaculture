@@ -24,7 +24,7 @@ repositories {
   flatDir { dirs 'deps' }
 }
 
-version = "${minecraft_version}-${mod_version}" + getBuildNumber()
+version = "${minecraft_version}-${mod_version}"
 group = "com.teammetallurgy.aquaculture"
 archivesBaseName = "Aquaculture"
 
