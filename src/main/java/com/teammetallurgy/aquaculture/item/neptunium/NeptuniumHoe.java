@@ -14,9 +14,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.event.ForgeEventFactory;
 
 import javax.annotation.Nonnull;
 import java.util.function.Consumer;
@@ -30,44 +27,32 @@ public class NeptuniumHoe extends HoeItem {
 
     @Override
     @Nonnull
-    public InteractionResult useOn(UseOnContext useContext) {
-        Level level = useContext.getLevel();
-        BlockPos pos = useContext.getClickedPos();
-        BlockState state = level.getBlockState(pos);
-        int hook = ForgeEventFactory.onHoeUse(useContext);
-        if (hook != 0) {
-            if (hook < 0) {
-                return InteractionResult.FAIL;
-            }
-            if (state == Blocks.FARMLAND.defaultBlockState()) {
-                level.setBlock(pos, AquaBlocks.FARMLAND.defaultBlockState(), 11);
-            }
-            return InteractionResult.SUCCESS;
-        } else {
-            if (useContext.getClickedFace() != Direction.DOWN && level.isEmptyBlock(pos.above())) {
-                Pair<Predicate<UseOnContext>, Consumer<UseOnContext>> pair = TILLABLES.get(level.getBlockState(pos).getBlock());
-                if (pair != null) {
-                    Predicate<UseOnContext> predicate = pair.getFirst();
-                    Consumer<UseOnContext> consumer = pair.getSecond();
-                    if (predicate.test(useContext)) {
-                        Player player = useContext.getPlayer();
-                        level.playSound(player, pos, SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1.0F, 1.0F);
-                        if (!level.isClientSide) {
-                            consumer.accept(useContext);
-                            if (state == Blocks.FARMLAND.defaultBlockState()) {
-                                level.setBlock(pos, AquaBlocks.FARMLAND.defaultBlockState(), 11);
-                            } else {
-                                level.setBlock(pos, state, 11);
-                            }
-                            if (player != null) {
-                                useContext.getItemInHand().hurtAndBreak(1, player, (livingEntity) -> livingEntity.broadcastBreakEvent(useContext.getHand()));
-                            }
+    public InteractionResult useOn(UseOnContext context) {
+        Level level = context.getLevel();
+        BlockPos pos = context.getClickedPos();
+        Pair<Predicate<UseOnContext>, Consumer<UseOnContext>> tillables = TILLABLES.get(level.getBlockState(pos).getBlock());
+        if (context.getClickedFace() != Direction.DOWN && level.isEmptyBlock(pos.above())) {
+            if (tillables == null) {
+                return InteractionResult.PASS;
+            } else {
+                Predicate<UseOnContext> predicate = tillables.getFirst();
+                if (predicate.test(context)) {
+                    Player player = context.getPlayer();
+                    level.playSound(player, pos, SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1.0F, 1.0F);
+                    if (!level.isClientSide) {
+                        level.setBlock(pos, AquaBlocks.FARMLAND.defaultBlockState(), 2);
+                        if (player != null) {
+                            context.getItemInHand().hurtAndBreak(1, player, (p_150845_) -> {
+                                p_150845_.broadcastBreakEvent(context.getHand());
+                            });
                         }
-                        return InteractionResult.sidedSuccess(level.isClientSide);
                     }
+                    return InteractionResult.sidedSuccess(level.isClientSide);
+                } else {
+                    return InteractionResult.PASS;
                 }
             }
-            return InteractionResult.PASS;
         }
+        return InteractionResult.PASS;
     }
 }
