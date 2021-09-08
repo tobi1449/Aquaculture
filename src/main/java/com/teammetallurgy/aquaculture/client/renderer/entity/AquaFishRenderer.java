@@ -74,7 +74,7 @@ public class AquaFishRenderer extends MobRenderer<AquaFishEntity, EntityModel<Aq
     }
 
     @Override
-    protected void applyRotations(AquaFishEntity fishEntity, @Nonnull MatrixStack matrixStack, float ageInTicks, float rotationYaw, float partialTicks) {
+    protected void applyRotations(@Nonnull AquaFishEntity fishEntity, @Nonnull MatrixStack matrixStack, float ageInTicks, float rotationYaw, float partialTicks) {
         super.applyRotations(fishEntity, matrixStack, ageInTicks, rotationYaw, partialTicks);
         FishType fishType = AquaFishEntity.TYPES.get(fishEntity.getType());
         if (fishType != FishType.JELLYFISH) {
@@ -108,7 +108,7 @@ public class AquaFishRenderer extends MobRenderer<AquaFishEntity, EntityModel<Aq
     }
 
     @Override
-    protected void preRenderCallback(AquaFishEntity fishEntity, MatrixStack matrixStack, float partialTickTime) {
+    protected void preRenderCallback(AquaFishEntity fishEntity, @Nonnull MatrixStack matrixStack, float partialTickTime) {
         ResourceLocation location = fishEntity.getType().getRegistryName();
         float scale = 0.0F;
         if (location != null) {
