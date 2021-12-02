@@ -12,8 +12,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
-import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -42,7 +42,7 @@ public class AquaBlocks {
      * @return The Block that was registered
      */
     public static RegistryObject<Block> register(@Nonnull Block block, @Nonnull String name, @Nullable Item.Properties properties) {
-        AquaItems.register(() -> new BlockItem(block, properties == null ? new Item.Properties() : properties.tab(Aquaculture.GROUP)), name); //TODO block pram
+        AquaItems.register(() -> new BlockItem(block, properties == null ? new Item.Properties() : properties.tab(Aquaculture.GROUP)), name);
         return registerBaseBlock(() -> block, name);
     }
 
@@ -54,7 +54,7 @@ public class AquaBlocks {
      * @return The Block that was registered
      */
     public static RegistryObject<Block> registerWithRenderer(@Nonnull Block block, @Nonnull String name, @Nullable Item.Properties properties) {
-        AquaItems.register(() -> new BlockItemWithoutLevelRenderer(block, properties == null ? new Item.Properties() : properties.tab(Aquaculture.GROUP)), name); //TODO block pram
+        AquaItems.register(() -> new BlockItemWithoutLevelRenderer(block, properties == null ? new Item.Properties() : properties.tab(Aquaculture.GROUP)), name);
         return registerBaseBlock(() -> block, name);
     }
 

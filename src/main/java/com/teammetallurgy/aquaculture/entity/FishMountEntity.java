@@ -1,7 +1,7 @@
 package com.teammetallurgy.aquaculture.entity;
 
 import com.teammetallurgy.aquaculture.api.AquacultureAPI;
-import com.teammetallurgy.aquaculture.misc.AquacultureSounds;
+import com.teammetallurgy.aquaculture.init.AquaSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -29,9 +29,9 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fmllegacy.common.registry.IEntityAdditionalSpawnData;
-import net.minecraftforge.fmllegacy.network.FMLPlayMessages;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
+import net.minecraftforge.entity.IEntityAdditionalSpawnData;
+import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.network.PlayMessages;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
@@ -55,7 +55,7 @@ public class FishMountEntity extends HangingEntity implements IEntityAdditionalS
         this.setDirection(direction);
     }
 
-    public FishMountEntity(FMLPlayMessages.SpawnEntity spawnPacket, Level world) {
+    public FishMountEntity(PlayMessages.SpawnEntity spawnPacket, Level world) {
         this((EntityType<? extends FishMountEntity>) ForgeRegistries.ENTITIES.getValue(spawnPacket.getAdditionalData().readResourceLocation()), world);
     }
 
@@ -141,7 +141,7 @@ public class FishMountEntity extends HangingEntity implements IEntityAdditionalS
         } else if (!source.isExplosion() && !this.getDisplayedItem().isEmpty()) {
             if (!this.level.isClientSide) {
                 this.dropItemOrSelf(source.getEntity(), false);
-                this.playSound(AquacultureSounds.FISH_MOUNT_REMOVED, 1.0F, 1.0F);
+                this.playSound(AquaSounds.FISH_MOUNT_REMOVED, 1.0F, 1.0F);
             }
             return true;
         } else {
@@ -169,13 +169,13 @@ public class FishMountEntity extends HangingEntity implements IEntityAdditionalS
 
     @Override
     public void dropItem(@Nullable Entity brokenEntity) {
-        this.playSound(AquacultureSounds.FISH_MOUNT_BROKEN, 1.0F, 1.0F);
+        this.playSound(AquaSounds.FISH_MOUNT_BROKEN, 1.0F, 1.0F);
         this.dropItemOrSelf(brokenEntity, true);
     }
 
     @Override
     public void playPlacementSound() {
-        this.playSound(AquacultureSounds.FISH_MOUNT_PLACED, 1.0F, 1.0F);
+        this.playSound(AquaSounds.FISH_MOUNT_PLACED, 1.0F, 1.0F);
     }
 
     private void dropItemOrSelf(@Nullable Entity entity, boolean shouldDropSelf) {
@@ -233,7 +233,7 @@ public class FishMountEntity extends HangingEntity implements IEntityAdditionalS
 
         this.getEntityData().set(ITEM, stack);
         if (!stack.isEmpty()) {
-            this.playSound(AquacultureSounds.FISH_MOUNT_ADD_ITEM, 1.0F, 1.0F);
+            this.playSound(AquaSounds.FISH_MOUNT_ADD_ITEM, 1.0F, 1.0F);
         }
 
         if (shouldUpdate && this.pos != null) {

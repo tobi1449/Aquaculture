@@ -1,7 +1,6 @@
 package com.teammetallurgy.aquaculture.api.fishing;
 
 import com.teammetallurgy.aquaculture.Aquaculture;
-import com.teammetallurgy.aquaculture.init.AquaItems;
 import com.teammetallurgy.aquaculture.item.HookItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.resources.ResourceLocation;
@@ -49,7 +48,7 @@ public class Hook {
         this.texture = new ResourceLocation(modID, "textures/entity/rod/hook/" + name + "_hook" + ".png");
         if (name != null) {
             this.hookItem = new HookItem(this).setRegistryName(new ResourceLocation(modID, name + "_hook"));
-            ForgeRegistries.ITEMS.register(this.hookItem); //TODO Move to DeferredRegistry in 1.18
+            ForgeRegistries.ITEMS.register(this.hookItem);
             HOOKS.put(name, hookItem);
         } else {
             this.hookItem = Items.AIR;

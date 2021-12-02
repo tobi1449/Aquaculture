@@ -1,9 +1,8 @@
 package com.teammetallurgy.aquaculture.block.tileentity;
 
 import com.teammetallurgy.aquaculture.init.AquaBlockEntities;
-import com.teammetallurgy.aquaculture.init.AquaBlocks;
 import com.teammetallurgy.aquaculture.inventory.container.TackleBoxContainer;
-import com.teammetallurgy.aquaculture.misc.AquacultureSounds;
+import com.teammetallurgy.aquaculture.init.AquaSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -11,10 +10,8 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestLidController;
 import net.minecraft.world.level.block.entity.ContainerOpenersCounter;
 import net.minecraft.world.level.block.state.BlockState;
@@ -28,12 +25,12 @@ public class TackleBoxTileEntity extends IItemHandlerTEBase implements MenuProvi
     private final ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
         @Override
         protected void onOpen(@Nonnull Level level, @Nonnull BlockPos pos, @Nonnull BlockState state) {
-            TackleBoxTileEntity.playSound(level, pos, state, AquacultureSounds.TACKLE_BOX_OPEN);
+            TackleBoxTileEntity.playSound(level, pos, state, AquaSounds.TACKLE_BOX_OPEN);
         }
 
         @Override
         protected void onClose(@Nonnull Level level, @Nonnull BlockPos pos, @Nonnull BlockState state) {
-            TackleBoxTileEntity.playSound(level, pos, state, AquacultureSounds.TACKLE_BOX_CLOSE);
+            TackleBoxTileEntity.playSound(level, pos, state, AquaSounds.TACKLE_BOX_CLOSE);
         }
 
         @Override
@@ -55,7 +52,13 @@ public class TackleBoxTileEntity extends IItemHandlerTEBase implements MenuProvi
     @Override
     @Nonnull
     protected IItemHandler createItemHandler() {
-        return new ItemStackHandler(17);
+        return new ItemStackHandler(17) {
+            @Override
+            protected void onContentsChanged(int slot) {
+                super.onContentsChanged(slot);
+                setChanged();
+            }
+        };
     }
 
     @Nullable

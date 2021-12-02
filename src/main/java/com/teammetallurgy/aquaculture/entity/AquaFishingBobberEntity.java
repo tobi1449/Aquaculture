@@ -9,7 +9,7 @@ import com.teammetallurgy.aquaculture.init.AquaLootTables;
 import com.teammetallurgy.aquaculture.item.AquaFishingRodItem;
 import com.teammetallurgy.aquaculture.item.HookItem;
 import com.teammetallurgy.aquaculture.misc.AquaConfig;
-import com.teammetallurgy.aquaculture.misc.AquacultureSounds;
+import com.teammetallurgy.aquaculture.init.AquaSounds;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
@@ -43,11 +43,11 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.event.entity.player.ItemFishedEvent;
-import net.minecraftforge.fmllegacy.common.registry.IEntityAdditionalSpawnData;
-import net.minecraftforge.fmllegacy.network.FMLPlayMessages;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.network.PlayMessages;
 
 import javax.annotation.Nonnull;
 import java.util.Collections;
@@ -62,7 +62,7 @@ public class AquaFishingBobberEntity extends FishingHook implements IEntityAddit
     private final ItemStack fishingRod;
     private final int luck;
 
-    public AquaFishingBobberEntity(FMLPlayMessages.SpawnEntity spawnPacket, Level world) {
+    public AquaFishingBobberEntity(PlayMessages.SpawnEntity spawnPacket, Level world) {
         super(world.getPlayerByUUID(spawnPacket.getAdditionalData().readUUID()), world, 0, 0);
         FriendlyByteBuf buf = spawnPacket.getAdditionalData();
         this.luck = buf.readInt();
@@ -183,7 +183,7 @@ public class AquaFishingBobberEntity extends FishingHook implements IEntityAddit
                         if (!bait.isEmpty()) {
                             if (bait.hurt(1, this.level.random, null)) {
                                 bait.shrink(1);
-                                this.playSound(AquacultureSounds.BOBBER_BAIT_BREAK, 0.7F, 0.2F);
+                                this.playSound(AquaSounds.BOBBER_BAIT_BREAK, 0.7F, 0.2F);
                             }
                             rodHandler.setStackInSlot(1, bait);
                         }
@@ -434,7 +434,7 @@ public class AquaFishingBobberEntity extends FishingHook implements IEntityAddit
 
                 //Lava sound added
                 if (serverworld.getFluidState(this.blockPosition()).is(FluidTags.LAVA)) {
-                    this.playSound(AquacultureSounds.BOBBER_LAND_IN_LAVA, 1.00F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.4F);
+                    this.playSound(AquaSounds.BOBBER_LAND_IN_LAVA, 1.00F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.4F);
                     serverworld.sendParticles(ParticleTypes.LAVA, this.getX(), boundingBox, this.getZ(), (int) (1.0F + this.getBbWidth() * 20.0F), this.getBbWidth(), 0.0D, this.getBbWidth(), 0.2D);
                 }
                 if (this.hasHook() && this.hook.getMaxCatchable() > 0) { //Added check
