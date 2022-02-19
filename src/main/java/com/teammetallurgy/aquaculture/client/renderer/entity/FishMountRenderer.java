@@ -73,20 +73,22 @@ public class FishMountRenderer extends EntityRenderer<FishMountEntity> {
         Entity entity = fishMount.entity;
         if (entity instanceof MobEntity) {
             MobEntity fish = (MobEntity) entity;
-            double x = 0.0D;
-            double y = 0.0D;
-            double depth = 0.42D;
-            if (fish instanceof PufferfishEntity) {
-                depth += 0.09D;
-            } else if (fish instanceof AquaFishEntity && AquaFishEntity.TYPES.get(fish.getType()).equals(FishType.LONGNOSE)) {
-                x = -0.1F;
-                y = -0.18D;
+            if (fish != null) {
+                double x = 0.0D;
+                double y = 0.0D;
+                double depth = 0.42D;
+                if (fish instanceof PufferfishEntity) {
+                    depth += 0.09D;
+                } else if (fish instanceof AquaFishEntity && AquaFishEntity.TYPES.get(fish.getType()).equals(FishType.LONGNOSE)) {
+                    x = -0.1F;
+                    y = -0.18D;
+                }
+                fish.setNoAI(true);
+                matrixStack.translate(x, y, depth);
+                matrixStack.rotate(Vector3f.XP.rotationDegrees(-90.0F));
+                matrixStack.rotate(Vector3f.YP.rotationDegrees(-90.0F));
+                this.mc.getRenderManager().renderEntityStatic(fish, 0.0F, 0.0F, 0.0F, 0.0F, 0, matrixStack, buffer, i);
             }
-            fish.setNoAI(true);
-            matrixStack.translate(x, y, depth);
-            matrixStack.rotate(Vector3f.XP.rotationDegrees(-90.0F));
-            matrixStack.rotate(Vector3f.YP.rotationDegrees(-90.0F));
-            this.mc.getRenderManager().renderEntityStatic(fish, 0.0F, 0.0F, 0.0F, 0.0F, 0, matrixStack, buffer, i);
         }
     }
 
