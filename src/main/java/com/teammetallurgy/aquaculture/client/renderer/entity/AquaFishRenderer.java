@@ -36,31 +36,33 @@ public class AquaFishRenderer extends MobRenderer<AquaFishEntity, EntityModel<Aq
 
     @Override
     public void render(@Nonnull AquaFishEntity fishEntity, float entityYaw, float partialTicks, @Nonnull MatrixStack matrixStack, @Nonnull IRenderTypeBuffer buffer, int i) {
-        switch (AquaFishEntity.TYPES.get(fishEntity.getType())) {
-            case SMALL:
-                this.entityModel = SMALL_MODEL;
-                break;
-            case LARGE:
-                this.entityModel = LARGE_MODEL;
-                break;
-            case LONGNOSE:
-                this.entityModel = LONGNOSE_MODEL;
-                break;
-            case CATFISH:
-                this.entityModel = CATFISH_MODEL;
-                break;
-            case JELLYFISH:
-                this.entityModel = JELLYFISH_MODEL;
-                break;
-            case HALIBUT:
-                this.entityModel = TROPICAL_FISH_B_MODEL;
-                break;
-            case MEDIUM:
-            default:
-                this.entityModel = MEDIUM_MODEL;
-                break;
+        if (fishEntity != null) {
+            switch (AquaFishEntity.TYPES.get(fishEntity.getType())) {
+                case SMALL:
+                    this.entityModel = SMALL_MODEL;
+                    break;
+                case LARGE:
+                    this.entityModel = LARGE_MODEL;
+                    break;
+                case LONGNOSE:
+                    this.entityModel = LONGNOSE_MODEL;
+                    break;
+                case CATFISH:
+                    this.entityModel = CATFISH_MODEL;
+                    break;
+                case JELLYFISH:
+                    this.entityModel = JELLYFISH_MODEL;
+                    break;
+                case HALIBUT:
+                    this.entityModel = TROPICAL_FISH_B_MODEL;
+                    break;
+                case MEDIUM:
+                default:
+                    this.entityModel = MEDIUM_MODEL;
+                    break;
+            }
+            super.render(fishEntity, entityYaw, partialTicks, matrixStack, buffer, i);
         }
-        super.render(fishEntity, entityYaw, partialTicks, matrixStack, buffer, i);
     }
 
     @Override

@@ -93,7 +93,7 @@ public class WormFarmBlock extends ComposterBlock {
     @Override
     public void tick(BlockState state, @Nonnull ServerWorld world, @Nonnull BlockPos pos, Random random) {
     }
-    
+
     private static boolean addItem(BlockState state, IWorld world, BlockPos pos, @Nonnull ItemStack stack) {
         int level = state.get(LEVEL);
         float chance = CHANCES.getFloat(stack.getItem());
