@@ -17,9 +17,7 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootConditionType;
 import net.minecraft.loot.conditions.LootConditionManager;
-import net.minecraft.tags.TagCollectionManager;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.gen.feature.structure.MineshaftPieces;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -56,7 +54,6 @@ public class Aquaculture {
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, AquaConfig.spec);
         AquacultureAPI.Tags.init();
         FishFilletRecipe.IRECIPE_SERIALIZERS_DEFERRED.register(modBus);
-        MineshaftPieces
     }
 
     private void setupCommon(FMLCommonSetupEvent event) {
