@@ -5,7 +5,9 @@ import com.teammetallurgy.aquaculture.Aquaculture;
 import com.teammetallurgy.aquaculture.entity.AquaFishEntity;
 import com.teammetallurgy.aquaculture.entity.FishMountEntity;
 import com.teammetallurgy.aquaculture.entity.FishType;
+import com.teammetallurgy.aquaculture.item.AquaFishBucket;
 import com.teammetallurgy.aquaculture.item.FishMountItem;
+import com.teammetallurgy.aquaculture.loot.BiomeTagCheck;
 import com.teammetallurgy.aquaculture.misc.StackHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -18,6 +20,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditions;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -32,16 +35,14 @@ import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(modid = Aquaculture.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class FishRegistry {
-    public static List<EntityType<AquaFishEntity>> fishEntities = Lists.newArrayList();
-    public static List<EntityType<FishMountEntity>> fishMounts = Lists.newArrayList();
+    public static List<RegistryObject<EntityType<AquaFishEntity>>> fishEntities = Lists.newArrayList();
+    public static List<RegistryObject<EntityType<FishMountEntity>>> fishMounts = Lists.newArrayList();
 
-    public static Item registerFishMount(@Nonnull String name) {
-        EntityType.Builder<FishMountEntity> fishMountBuilder = EntityType.Builder.<FishMountEntity>of(FishMountEntity::new, MobCategory.MISC)
+    public static RegistryObject<Item> registerFishMount(@Nonnull String name) {
+        RegistryObject<EntityType<FishMountEntity>> fishMount = AquaEntities.ENTITY_DEFERRED.register(name, () -> EntityType.Builder.<FishMountEntity>of(FishMountEntity::new, MobCategory.MISC)
                 .sized(0.5F, 0.5F)
-                .setCustomClientFactory(FishMountEntity::new);
-        EntityType<FishMountEntity> fishMount = AquaEntities.register(name, fishMountBuilder);
-        FishMountItem fishMountItem = new FishMountItem(fishMount);
-        AquaItems.register(() -> fishMountItem, name);
+                .setCustomClientFactory(FishMountEntity::new).build(Aquaculture.MOD_ID + ":" + name));
+        RegistryObject<Item> fishMountItem = AquaItems.register(() -> new FishMountItem(fishMount), name);
         fishMounts.add(fishMount);
         return fishMountItem;
     }
@@ -60,32 +61,28 @@ public class FishRegistry {
      * @param name     The fish name
      * @return The fish Item that was registered
      */
-    public static RegistryObject<Item> register(@Nonnull Supplier<Item> initializer, @Nonnull String name, FishType fishSize) {
-        EntityType<AquaFishEntity> fish = EntityType.Builder.of(AquaFishEntity::new, MobCategory.WATER_AMBIENT).sized(fishSize.getWidth(), fishSize.getHeight()).build(Aquaculture.MOD_ID + ":" + name);
-        registerFishEntity(name, fish);
-        AquaFishEntity.TYPES.put(fish, fishSize);
-        return AquaItems.register(initializer, name);
-    }
+    public static RegistryObject<Item> register(@Nonnull Supplier<Item> initializer, @Nonnull String name, FishType fishType) {
+        RegistryObject<EntityType<AquaFishEntity>> fish = AquaEntities.ENTITY_DEFERRED.register(name, () -> EntityType.Builder.<AquaFishEntity>of((f, w) -> new AquaFishEntity(f, w, fishType), MobCategory.WATER_AMBIENT).sized(fishType.getWidth(), fishType.getHeight()).build(Aquaculture.MOD_ID + ":" + name));
+        fishEntities.add(fish);
 
-    public static EntityType<AquaFishEntity> registerFishEntity(String name, EntityType<AquaFishEntity> entityType) {
-        ResourceLocation location = new ResourceLocation(Aquaculture.MOD_ID, name);
-        entityType.setRegistryName(location);
-        fishEntities.add(entityType);
-        return entityType;
+        //Registers fish buckets
+        RegistryObject<AquaFishBucket> bucket = AquaItems.ITEM_DEFERRED.register(name + "_bucket", () -> new AquaFishBucket(fish, (new Item.Properties()).stacksTo(1).tab(Aquaculture.GROUP)));
+
+        return AquaItems.register(initializer, name);
     }
 
     @SubscribeEvent
     public static void registerFishies(RegistryEvent.Register<EntityType<?>> event) {
-        for (EntityType<AquaFishEntity> entityType : fishEntities) {
-            event.getRegistry().register(entityType);
-            SpawnPlacements.register(entityType, SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, AquaFishEntity::canSpawnHere);
+        for (RegistryObject<EntityType<AquaFishEntity>> entityType : fishEntities) {
+            SpawnPlacements.register(entityType.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, AquaFishEntity::canSpawnHere);
         }
+        Aquaculture.BIOME_TAG_CHECK = LootItemConditions.register(new ResourceLocation(Aquaculture.MOD_ID, "biome_tag_check").toString(), new BiomeTagCheck.BiomeTagCheckSerializer());
     }
 
     @SubscribeEvent
     public static void addFishEntity0Attributes(EntityAttributeCreationEvent event) {
-        for (EntityType<AquaFishEntity> entityType : fishEntities) {
-            event.put(entityType, AbstractFish.createAttributes().build());
+        for (RegistryObject<EntityType<AquaFishEntity>> entityType : fishEntities) {
+            event.put(entityType.get(), AbstractFish.createAttributes().build());
         }
     }
 
@@ -94,8 +91,8 @@ public class FishRegistry {
             Ingredient catBreedingItems = Cat.TEMPT_INGREDIENT;
             Ingredient ocelotBreedingItems = Ocelot.TEMPT_INGREDIENT;
             List<ItemStack> aquaFish = new ArrayList<>();
-            fishEntities.forEach(f -> aquaFish.add(new ItemStack(ForgeRegistries.ITEMS.getValue(f.getRegistryName()))));
-            aquaFish.removeIf(p -> p.getItem().equals(AquaItems.JELLYFISH));
+            fishEntities.forEach(f -> aquaFish.add(new ItemStack(ForgeRegistries.ITEMS.getValue(f.get().getRegistryName()))));
+            aquaFish.removeIf(p -> p.getItem().equals(AquaItems.JELLYFISH.get()));
 
             Cat.TEMPT_INGREDIENT = StackHelper.mergeIngredient(catBreedingItems, StackHelper.ingredientFromStackList(aquaFish));
             Ocelot.TEMPT_INGREDIENT = StackHelper.mergeIngredient(ocelotBreedingItems, StackHelper.ingredientFromStackList(aquaFish));

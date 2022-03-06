@@ -2,24 +2,18 @@ package com.teammetallurgy.aquaculture.init;
 
 import com.teammetallurgy.aquaculture.Aquaculture;
 import com.teammetallurgy.aquaculture.api.AquacultureAPI;
-import com.teammetallurgy.aquaculture.entity.AquaFishEntity;
 import com.teammetallurgy.aquaculture.entity.FishType;
 import com.teammetallurgy.aquaculture.item.*;
 import com.teammetallurgy.aquaculture.item.neptunium.*;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.food.Foods;
 import net.minecraft.world.item.*;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
 import javax.annotation.Nonnull;
 import java.util.function.Supplier;
 
-@Mod.EventBusSubscriber(modid = Aquaculture.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class AquaItems {
     public static final DeferredRegister<Item> ITEM_DEFERRED = DeferredRegister.create(Item.class, Aquaculture.MOD_ID);
 
@@ -110,12 +104,12 @@ public class AquaItems {
     public static final RegistryObject<Item> STARSHELL_TURTLE = register(SimpleItem::new, "starshell_turtle");
 
     //Fish Mounting
-    public static final Item OAK_FISH_MOUNT = AquacultureAPI.registerFishMount("oak_fish_mount");
-    public static final Item SPRUCE_FISH_MOUNT = AquacultureAPI.registerFishMount("spruce_fish_mount");
-    public static final Item BIRCH_FISH_MOUNT = AquacultureAPI.registerFishMount("birch_fish_mount");
-    public static final Item JUNGLE_FISH_MOUNT = AquacultureAPI.registerFishMount("jungle_fish_mount");
-    public static final Item ACACIA_FISH_MOUNT = AquacultureAPI.registerFishMount("acacia_fish_mount");
-    public static final Item DARK_OAK_FISH_MOUNT = AquacultureAPI.registerFishMount("dark_oak_fish_mount");
+    public static final RegistryObject<Item> OAK_FISH_MOUNT = AquacultureAPI.registerFishMount("oak_fish_mount");
+    public static final RegistryObject<Item> SPRUCE_FISH_MOUNT = AquacultureAPI.registerFishMount("spruce_fish_mount");
+    public static final RegistryObject<Item> BIRCH_FISH_MOUNT = AquacultureAPI.registerFishMount("birch_fish_mount");
+    public static final RegistryObject<Item> JUNGLE_FISH_MOUNT = AquacultureAPI.registerFishMount("jungle_fish_mount");
+    public static final RegistryObject<Item> ACACIA_FISH_MOUNT = AquacultureAPI.registerFishMount("acacia_fish_mount");
+    public static final RegistryObject<Item> DARK_OAK_FISH_MOUNT = AquacultureAPI.registerFishMount("dark_oak_fish_mount");
 
     /**
      * Registers an item
@@ -126,17 +120,5 @@ public class AquaItems {
      */
     public static RegistryObject<Item> register(@Nonnull Supplier<Item> initializer, @Nonnull String name) {
         return ITEM_DEFERRED.register(name, initializer);
-    }
-
-    @SubscribeEvent
-    public static void registerItems(RegistryEvent.Register<Item> event) {
-        for (EntityType<AquaFishEntity> fishType : FishRegistry.fishEntities) { //Registers fish buckets
-            if (fishType.getRegistryName() != null) {
-                Item bucket = new AquaFishBucket(fishType, (new Item.Properties()).stacksTo(1).tab(Aquaculture.GROUP));
-                bucket.setRegistryName(fishType.getRegistryName().getPath() + "_bucket");
-                event.getRegistry().register(bucket);
-                AquaFishEntity.BUCKETS.put(fishType, bucket);
-            }
-        }
     }
 }
