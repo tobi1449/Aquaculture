@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 
@@ -63,7 +64,7 @@ public class AquaFishRenderer extends MobRenderer<AquaFishEntity, EntityModel<Aq
     @Override
     @Nonnull
     public ResourceLocation getTextureLocation(@Nonnull AquaFishEntity fishEntity) {
-        ResourceLocation location = fishEntity.getType().getRegistryName();
+        ResourceLocation location = ForgeRegistries.ENTITIES.getKey(fishEntity.getType());
         if (location != null) {
             return new ResourceLocation(Aquaculture.MOD_ID, "textures/entity/fish/" + location.getPath() + ".png");
         }
@@ -106,7 +107,7 @@ public class AquaFishRenderer extends MobRenderer<AquaFishEntity, EntityModel<Aq
 
     @Override
     protected void scale(AquaFishEntity fishEntity, @Nonnull PoseStack matrixStack, float partialTickTime) {
-        ResourceLocation location = fishEntity.getType().getRegistryName();
+        ResourceLocation location = ForgeRegistries.ENTITIES.getKey(fishEntity.getType());
         float scale = 0.0F;
         if (location != null) {
             switch (location.getPath()) {

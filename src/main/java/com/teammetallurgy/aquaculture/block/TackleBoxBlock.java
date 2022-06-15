@@ -10,6 +10,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -47,7 +48,6 @@ import net.minecraftforge.network.NetworkHooks;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Optional;
-import java.util.Random;
 
 public class TackleBoxBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
@@ -237,7 +237,7 @@ public class TackleBoxBlock extends BaseEntityBlock implements SimpleWaterlogged
     }
 
     @Override
-    public void tick(@Nonnull BlockState state, ServerLevel serverLevel, @Nonnull BlockPos pos, @Nonnull Random rand) {
+    public void tick(@Nonnull BlockState state, ServerLevel serverLevel, @Nonnull BlockPos pos, @Nonnull RandomSource rand) {
         BlockEntity blockEntity = serverLevel.getBlockEntity(pos);
         if (blockEntity instanceof TackleBoxTileEntity) {
             ((TackleBoxTileEntity) blockEntity).recheckOpen();

@@ -39,6 +39,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Objects;
 
 public class FishMountEntity extends HangingEntity implements IEntityAdditionalSpawnData {
     private static final Logger PRIVATE_LOGGER = LogManager.getLogger();
@@ -110,19 +111,20 @@ public class FishMountEntity extends HangingEntity implements IEntityAdditionalS
             double z1 = this.getWidth() / 32.0D;
             double z2 = this.getWidth() / 32.0D;
             switch (this.direction.getAxis()) {
-                case X:
+                case X -> {
                     x1 = (this.direction.getStepX() < 0 ? 3.0D : 1.0D) / 32.0D;
                     x2 = (this.direction.getStepX() > 0 ? 3.0D : 1.0D) / 32.0D;
-                    break;
-                case Y:
+                }
+                case Y -> {
                     y1 = (this.direction.getStepY() < 0 ? 3.0D : 1.0D) / 32.0D;
                     y2 = (this.direction.getStepY() > 0 ? 3.0D : 1.0D) / 32.0D;
                     z1 = 8.0D / 32.0D;
                     z2 = 8.0D / 32.0D;
-                    break;
-                case Z:
+                }
+                case Z -> {
                     z1 = (this.direction.getStepZ() < 0 ? 3.0D : 1.0D) / 32.0D;
                     z2 = (this.direction.getStepZ() > 0 ? 3.0D : 1.0D) / 32.0D;
+                }
             }
             this.setBoundingBox(new AABB(posX - x1, posY - y1, posZ - z1, posX + x2, posY + y2, posZ + z2));
         }
@@ -141,7 +143,7 @@ public class FishMountEntity extends HangingEntity implements IEntityAdditionalS
         } else if (!source.isExplosion() && !this.getDisplayedItem().isEmpty()) {
             if (!this.level.isClientSide) {
                 this.dropItemOrSelf(source.getEntity(), false);
-                this.playSound(AquaSounds.FISH_MOUNT_REMOVED, 1.0F, 1.0F);
+                this.playSound(AquaSounds.FISH_MOUNT_REMOVED.get(), 1.0F, 1.0F);
             }
             return true;
         } else {
@@ -169,13 +171,13 @@ public class FishMountEntity extends HangingEntity implements IEntityAdditionalS
 
     @Override
     public void dropItem(@Nullable Entity brokenEntity) {
-        this.playSound(AquaSounds.FISH_MOUNT_BROKEN, 1.0F, 1.0F);
+        this.playSound(AquaSounds.FISH_MOUNT_BROKEN.get(), 1.0F, 1.0F);
         this.dropItemOrSelf(brokenEntity, true);
     }
 
     @Override
     public void playPlacementSound() {
-        this.playSound(AquaSounds.FISH_MOUNT_PLACED, 1.0F, 1.0F);
+        this.playSound(AquaSounds.FISH_MOUNT_PLACED.get(), 1.0F, 1.0F);
     }
 
     private void dropItemOrSelf(@Nullable Entity entity, boolean shouldDropSelf) {
@@ -187,9 +189,8 @@ public class FishMountEntity extends HangingEntity implements IEntityAdditionalS
         } else {
             ItemStack displayStack = this.getDisplayedItem();
             this.setDisplayedItem(ItemStack.EMPTY);
-            if (entity instanceof Player) {
-                Player playerentity = (Player) entity;
-                if (playerentity.getAbilities().instabuild) {
+            if (entity instanceof Player player) {
+                if (player.getAbilities().instabuild) {
                     this.setDisplayedItem(ItemStack.EMPTY);
                     return;
                 }
@@ -209,7 +210,7 @@ public class FishMountEntity extends HangingEntity implements IEntityAdditionalS
     }
 
     private Item getItem() {
-        ResourceLocation location = this.getType().getRegistryName();
+        ResourceLocation location = ForgeRegistries.ENTITIES.getKey(this.getType());
         if (ForgeRegistries.ITEMS.containsKey(location) && location != null) {
             return ForgeRegistries.ITEMS.getValue(location);
         }
@@ -233,7 +234,7 @@ public class FishMountEntity extends HangingEntity implements IEntityAdditionalS
 
         this.getEntityData().set(ITEM, stack);
         if (!stack.isEmpty()) {
-            this.playSound(AquaSounds.FISH_MOUNT_ADD_ITEM, 1.0F, 1.0F);
+            this.playSound(AquaSounds.FISH_MOUNT_ADD_ITEM.get(), 1.0F, 1.0F);
         }
 
         if (shouldUpdate && this.pos != null) {
@@ -253,7 +254,7 @@ public class FishMountEntity extends HangingEntity implements IEntityAdditionalS
         if (key.equals(ITEM)) {
             ItemStack displayStack = this.getDisplayedItem();
             if (displayStack != null && !displayStack.isEmpty()) {
-                EntityType entityType = ForgeRegistries.ENTITIES.getValue(displayStack.getItem().getRegistryName());
+                EntityType entityType = ForgeRegistries.ENTITIES.getValue(ForgeRegistries.ITEMS.getKey(displayStack.getItem()));
                 if (entityType != null && entityType != EntityType.PIG) {
                     this.entity = entityType.create(this.level);
                 }
@@ -264,7 +265,7 @@ public class FishMountEntity extends HangingEntity implements IEntityAdditionalS
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag compound) {
+    public void addAdditionalSaveData(@Nonnull CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         if (!this.getDisplayedItem().isEmpty()) {
             compound.put("Item", this.getDisplayedItem().save(new CompoundTag()));
@@ -274,7 +275,7 @@ public class FishMountEntity extends HangingEntity implements IEntityAdditionalS
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag compound) {
+    public void readAdditionalSaveData(@Nonnull CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         CompoundTag nbt = compound.getCompound("Item");
         if (nbt != null && !nbt.isEmpty()) {
@@ -303,7 +304,7 @@ public class FishMountEntity extends HangingEntity implements IEntityAdditionalS
         if (!this.level.isClientSide) {
             if (this.getDisplayedItem().isEmpty()) {
                 Item heldItem = heldStack.getItem();
-                EntityType<?> entityType = ForgeRegistries.ENTITIES.getValue(heldItem.getRegistryName());
+                EntityType<?> entityType = ForgeRegistries.ENTITIES.getValue(ForgeRegistries.ITEMS.getKey(heldItem));
                 if (entityType != EntityType.PIG && AquacultureAPI.FISH_DATA.getFish().contains(heldItem)) {
                     this.setDisplayedItem(heldStack);
                     if (!player.getAbilities().instabuild) {
@@ -339,7 +340,7 @@ public class FishMountEntity extends HangingEntity implements IEntityAdditionalS
 
     @Override
     public void writeSpawnData(FriendlyByteBuf buffer) {
-        buffer.writeResourceLocation(this.getType().getRegistryName());
+        buffer.writeResourceLocation(Objects.requireNonNull(ForgeRegistries.ENTITIES.getKey(this.getType())));
     }
 
     @Override
