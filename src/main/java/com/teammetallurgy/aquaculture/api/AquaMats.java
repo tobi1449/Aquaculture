@@ -14,15 +14,15 @@ public class AquaMats {
     public IItemTier NEPTUNIUM = new IItemTier() {
         @Override
         public int getMaxUses() {
-            return 2500;
+            return 1796;
         }
         @Override
         public float getEfficiency() {
-            return 9.0F;
+            return 8.5F;
         }
         @Override
         public float getAttackDamage() {
-            return 6.0F;
+            return 3.5F;
         }
         @Override
         public int getHarvestLevel() {
@@ -30,7 +30,7 @@ public class AquaMats {
         }
         @Override
         public int getEnchantability() {
-            return 15;
+            return 14;
         }
         @Override
         @Nonnull
@@ -39,7 +39,7 @@ public class AquaMats {
         }
     };
     public IArmorMaterial NEPTINIUM_ARMOR = new IArmorMaterial() {
-        private final int MAX_DAMAGE_FACTOR = 75;
+        private final int MAX_DAMAGE_FACTOR = 35;
 
         @Override
         public int getDurability(@Nonnull EquipmentSlotType slot) {
@@ -53,7 +53,7 @@ public class AquaMats {
         }
         @Override
         public int getEnchantability() {
-            return 15;
+            return 14;
         }
         @Override
         @Nonnull
