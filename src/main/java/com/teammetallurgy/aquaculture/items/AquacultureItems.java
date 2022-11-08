@@ -54,13 +54,13 @@ public class AquacultureItems {
     public static final SubItem treasureChest = new ItemTreasureChest(metaLootItem).setTranslationKey("TreasureChest").setCreativeTab(Aquaculture.tab);
     public static final SubItem neptunesBounty = new ItemNeptunesBounty(metaLootItem).setTranslationKey("NeptunesBounty").setCreativeTab(Aquaculture.tab);
     public static final ItemFish fish = (ItemFish) new ItemFish().setTranslationKey("Fish").setCreativeTab(Aquaculture.tab);
-    private static ToolMaterial neptuniumEnum = EnumHelper.addToolMaterial("Neptunium", 3, 2500, 9F, 6F, 15);
+    private static ToolMaterial neptuniumEnum = EnumHelper.addToolMaterial("Neptunium", 3, 1796, 8.5F, 3.5F, 14);
     public static final Item neptuniumPickaxe = new AquaItemPickaxe(neptuniumEnum).setTranslationKey("NeptuniumPickaxe").setCreativeTab(Aquaculture.tab);
     public static final Item neptuniumShovel = new AquaItemSpade(neptuniumEnum).setTranslationKey("NeptuniumShovel").setCreativeTab(Aquaculture.tab);
     public static final Item neptuniumAxe = new AquaItemAxe(neptuniumEnum).setTranslationKey("NeptuniumAxe").setCreativeTab(Aquaculture.tab);
     public static final Item neptuniumHoe = new AquaItemHoe(neptuniumEnum).setTranslationKey("NeptuniumHoe").setCreativeTab(Aquaculture.tab);
     public static final Item neptuniumSword = new AquaItemSword(neptuniumEnum).setTranslationKey("NeptuniumSword").setCreativeTab(Aquaculture.tab);
-    private static ArmorMaterial neptuniumArmorEnum = EnumHelper.addArmorMaterial("Neptunium", "", 75, new int[]{3, 6, 8, 3}, 15, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2.0F);
+    private static ArmorMaterial neptuniumArmorEnum = EnumHelper.addArmorMaterial("Neptunium", "", 35, new int[]{3, 6, 8, 3}, 15, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2.0F);
     public static final Item neptuniumHelmet = new NeptuniumArmor(neptuniumArmorEnum, 0, EntityEquipmentSlot.HEAD).setArmorTexture("neptunium_layer_1").setTranslationKey("NeptuniumHelmet").setCreativeTab(Aquaculture.tab);
     public static final Item neptuniumPlate = new NeptuniumArmor(neptuniumArmorEnum, 0, EntityEquipmentSlot.CHEST).setArmorTexture("neptunium_layer_1").setTranslationKey("NeptuniumChestplate").setCreativeTab(Aquaculture.tab);
     public static final Item neptuniumLegs = new NeptuniumArmor(neptuniumArmorEnum, 0, EntityEquipmentSlot.LEGS).setArmorTexture("neptunium_layer_2").setTranslationKey("NeptuniumLeggings").setCreativeTab(Aquaculture.tab);
