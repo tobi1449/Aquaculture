@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 public class AquaItemAxe extends ItemAxe {
 
     public AquaItemAxe(ToolMaterial toolMaterial) {
-        super(toolMaterial, 5.0F, -3.0F);
+        super(toolMaterial, 8.0F, -3.0F);
     }
 
     @Override
