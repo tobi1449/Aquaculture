@@ -205,7 +205,7 @@ public class AquaFishingBobberEntity extends FishingHook implements IEntityAddit
         ItemStack mainHand = player.getMainHandItem();
         ItemStack offHand = player.getOffhandItem();
         boolean isMainHandRod = mainHand.getItem() instanceof FishingRodItem;
-        boolean isOffHandRod = mainHand.getItem() instanceof FishingRodItem;
+        boolean isOffHandRod = offHand.getItem() instanceof FishingRodItem;
         if (!player.isRemoved() && player.isAlive() && (isMainHandRod || isOffHandRod) && !(this.distanceToSqr(player) > 1024.0D)) {
             return false;
         } else {
