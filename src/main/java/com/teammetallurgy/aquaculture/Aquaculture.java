@@ -22,7 +22,6 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -91,7 +90,7 @@ public class Aquaculture {
         GROUP = event.registerCreativeModeTab(new ResourceLocation(MOD_ID, "tab"), builder -> builder
                 .icon(() -> new ItemStack(AquaItems.IRON_FISHING_ROD.get()))
                 .title(Component.translatable("tabs." + MOD_ID + ".tab"))
-                .displayItems((featureFlagSet, tabOutput, hasOp) -> {
+                .displayItems((featureFlagSet, tabOutput) -> {
                     AquaItems.ITEMS_FOR_TAB_LIST.forEach(registryObject -> tabOutput.accept(new ItemStack(registryObject.get())));
                 })
         );
