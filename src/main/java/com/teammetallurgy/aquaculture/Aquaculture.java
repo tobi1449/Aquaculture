@@ -51,14 +51,14 @@ public class Aquaculture {
     }
 
     private void setupCommon(FMLCommonSetupEvent event) {
-        FishWeightHandler.registerFishData();
+        event.enqueueWork(FishWeightHandler::registerFishData);
         event.enqueueWork(AquaEntities::setSpawnPlacement);
         event.enqueueWork(WormFarmBlock::addCompostables);
         if (AquaConfig.BASIC_OPTIONS.aqFishToBreedCats.get()) {
             event.enqueueWork(FishRegistry::addCatBreeding);
         }
         if (AquaConfig.BASIC_OPTIONS.enableFishSpawning.get()) {
-            FishReadFromJson.read();
+            event.enqueueWork(FishReadFromJson::read);
         }
     }
 
