@@ -130,7 +130,7 @@ public class BiomeTagPredicate {
                     object.add("exclude", object.getAsJsonArray(type.getName()));
                 }
             }
-            object.addProperty("add", object.getAsBoolean());
+            object.addProperty("add", GsonHelper.getAsBoolean(object, "add", false));
             return object;
         }
     }
