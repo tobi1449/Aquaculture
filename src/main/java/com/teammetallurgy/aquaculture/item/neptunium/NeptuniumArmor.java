@@ -34,14 +34,13 @@ public class NeptuniumArmor extends ArmorItem {
 
     @Override
     public void onArmorTick(@Nonnull ItemStack stack, Level world, Player player) {
-        AttributeInstance swimSpeed = player.getAttribute(ForgeMod.SWIM_SPEED.get());
         if (player.isEyeInFluid(FluidTags.WATER)) {
             if (this.slot == EquipmentSlot.HEAD) {
                 player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 20, 0, false, false, false));
             } else if (this.slot == EquipmentSlot.CHEST) {
                 player.addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING, 20, 0, false, false, false));
             } else if (this.slot == EquipmentSlot.LEGS) {
-                if (!player.isCrouching()) {
+                if (!player.isCrouching() && !player.isSwimming()) {
                     player.setDeltaMovement(player.getDeltaMovement().add(0, player.fallDistance, 0));
                 }
             }
